@@ -140,7 +140,7 @@ public:
 			if(s==StartSign){
 				e.group.sendMessage(PlainText("Wordle on"));
 				time_t rawtime; time(&rawtime);
-    				tm *info=localtime_s(&rawtime);
+    				tm *info=localtime(&rawtime);
 				num=(int)((info->tm_sec)*(info->tm_min)/3600.0*N2);
 				answer=possible[num],chance=6,ifon=1;
 				memset(bits,0xFF,SZ);

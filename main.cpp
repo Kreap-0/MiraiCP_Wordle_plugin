@@ -12,7 +12,7 @@ using namespace std;
 const int N1=12953;
 const int N2=2309;
 
-const string StartSign=">wordle";
+const string StartSign="wordle";
 string possible[N2],answer;
 
 int chance=6,num,sign[5];
@@ -111,7 +111,7 @@ const int s1=sizeof(BITMAPFILEHEADER),
 		  s2=sizeof(BITMAPINFOHEADER);
 
 void saveBitmap(){
-	FILE *output=fopen("C:\\Wordle_tmp\\wordle.bmp","wb");
+	FILE *output=fopen("C:\\wordle.bmp","wb");
 	fwrite(&fileHeader,s1,1,output);
 	fwrite(&bitmapHeader,s2,1,output);
 	fwrite(bits,SZ,1,output);
@@ -140,7 +140,7 @@ public:
 			if(s==StartSign){
 				e.group.sendMessage(PlainText("Wordle on"));
 				time_t rawtime; time(&rawtime);
-    				tm *info=localtime(&rawtime);
+    			tm *info=localtime(&rawtime);
 				num=(int)((info->tm_sec)*(info->tm_min)/3600.0*N2);
 				answer=possible[num],chance=6,ifon=1;
 				memset(bits,0xFF,SZ);
@@ -151,21 +151,17 @@ public:
 				toLowerCase(s);
 				if(legal[s]){
 					int now=6-chance,cnt=0;
-					for(int i=0;i<5;i++){
-						if(s[i]==answer[i])
-							sign[i]=2,cnt++;
-						else{
-							bool tmp=0;
-							for(int j=0;j<5;j++)
-								if(s[i]==answer[j]){
-									tmp=1,sign[i]=1;
-									break;
-								}
-							if(!tmp) sign[i]=0;
-						}
+					for(int i=0;i<5;i++) sign[i]=0;
+					for(char c='a';c<='z';c++){
+						int tmp=0;
+						for(int i=0;i<5;i++)
+							if(s[i]==c&&answer[i]==c) cnt++,sign[i]=2;
+							else if(answer[i]==c) tmp++;
+						for(int i=0;tmp&&i<5;i++)
+							if(s[i]==c&&answer[i]!=c) tmp--,sign[i]=1;
 					}
 					DRAW(s,sign,now+1),saveBitmap();
-					Image bmp=e.group.uploadImg("C:\\Wordle_tmp\\wordle.bmp");
+					Image bmp=e.group.uploadImg("C:\\wordle.bmp");
 					e.group.sendMessage(bmp);
 					if(cnt==5){
 						e.group.sendMessage(PlainText("You win with "+num2str(now+1)+" attempts!"));

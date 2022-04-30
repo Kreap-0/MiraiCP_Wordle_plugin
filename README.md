@@ -1,4 +1,4 @@
-基于 [MiraiCP](https://github.com/Nambers/MiraiCP) 的 Wordle
+基于 [MiraiCP](https://github.com/Nambers/MiraiCP) ，一些基础配置参照原文
 
 使用方法:
 - 复制 wordle 文件夹到 data 文件夹下
